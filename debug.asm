@@ -1,6 +1,5 @@
 coredump:
     pusha
-    push sp
     
     mov bx, msg_core_dump
     call print_str
@@ -9,17 +8,20 @@ coredump:
     mov cx, 0
     coredump_loop:
 
-        mov bx, label_ax
-        add bx, cx
-        mov dx, bx              ; initialize terminating value
+        ; This block prints 2 consecutive chars in label_ax
+        ; label_ax stores the labels of each register printed in coredump
+        mov bx, label_ax        ; Initialize start of substring
+        add bx, cx              ; Offset start of substring by current iteration
+        mov dx, bx              ; initialize end of substring
         
-        add dx, 2               ; offset by 2
+        add dx, 2               ; offset end of substring by 2 to get 2 chars
         call print_substr       ; print substring
         
+        ; Separate register label from value
         mov bx, '='
         call print_char
         
-        mov bx, [esp+ecx+2]
+        mov bx, [esp+ecx]
         call print_hex
         call print_new_line
 
@@ -27,6 +29,5 @@ coredump:
         cmp cx, 16
 
         jne coredump_loop
-    pop ax
     popa
     ret
