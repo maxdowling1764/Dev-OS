@@ -1,3 +1,4 @@
+[bits 16]
 coredump:
     pusha
     

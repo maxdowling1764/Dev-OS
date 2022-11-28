@@ -1,3 +1,4 @@
+[bits 16]
 print_char:
     pusha
     mov ah, 0x0e

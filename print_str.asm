@@ -1,3 +1,4 @@
+[bits 16]
 print_str:
     pusha
     mov ah, 0x0e        ; BIOS scrolling tele-type routine
