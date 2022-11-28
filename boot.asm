@@ -63,7 +63,3 @@ begin_pm:
 [bits 16]
 times 510 - ($ - $$) db 0
 dw 0xaa55
-
-times 256 dw 0xDADA
-times 256 dw 0xDEAD
-times 1024 dw 0x0000
