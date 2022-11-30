@@ -1,4 +1,6 @@
 [bits 32]
-[extern main]
-call main
+[extern _main]
+call _main
+%include "idt.asm"
+
 jmp $
