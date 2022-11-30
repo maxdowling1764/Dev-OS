@@ -1,6 +1,6 @@
 #include "isr.h"
 #define INIT_ISR(num) \
-    set_idt_entry((num), (unsigned long)isr(num), 0x08, 0x8E);
+    set_idt_entry(num, (unsigned long) isr##num, 0x08, 0x8E);
 
 void init_isr()
 {
@@ -38,13 +38,18 @@ void init_isr()
     INIT_ISR(31);
 }
 
+void irq_handler(t_regs* r)
+{
+    return;
+}
+
 void fault_handler(t_regs* r)
 {
     if (r->int_code < 32)
     {
         // TODO Import Print String from refactored vga.h
         
-        while(true)
+        while(1==1)
         {
             // Hang on fault
         }

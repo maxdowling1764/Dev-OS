@@ -1,37 +1,35 @@
-[global _idt_load]
-[extern _p_idt]
-_idt_load:
-    lidt [_p_idt]
+[extern fault_handler]
+[extern irq_handler]
+[global idt_load]
+[extern p_idt]
+idt_load:
+    lidt [p_idt]
     ret
 
 %macro ISR_NO_ERR 1
-    [global _isr%1]
-    _isr%1:
+    [global isr%1]
+    isr%1:
         push byte 0
         push byte %1
         jmp isr_comm
 %endmacro
 
 %macro ISR_ERR 1
-    [global _isr%1]
-    _isr%1:
+    [global isr%1]
+    isr%1:
         cli
         push byte %1
         jmp isr_comm
 %endmacro
 
 %macro IRQ 2
-    [global _isr%1]
-    _isr%1:
+    [global irq%1]
+    irq%1:
         cli
         push byte 0
         push byte %2
-        jmp isr_comm
+        jmp irq_comm
 %endmacro
-
-%macro 
-[extern _isr_handler]
-[extern _fault_handler]
 
 %assign i 0
 %rep 8
@@ -56,7 +54,7 @@ ISR_NO_ERR 9
 %assign i 0
 %assign j 32
 %rep 15
-    IRQ i j
+    IRQ i, j
 %assign i i + 1
 %assign j j + 1
 %endrep
@@ -77,7 +75,7 @@ isr_comm:
     
     mov eax, esp
     push eax
-    call _isr_handler
+    call fault_handler
     
     pop eax
     pop gs
@@ -85,11 +83,8 @@ isr_comm:
     pop es
     pop ds 
     popa
-    add esp 8
-    sti
+    add esp, 8
     iret
-
-[extern _irq_handler]
 
 irq_comm:
     pusha
@@ -106,7 +101,7 @@ irq_comm:
     
     mov eax, esp
     push eax
-    call _irq_handler
+    call irq_handler
 
     pop eax
     pop gs
@@ -114,6 +109,5 @@ irq_comm:
     pop es
     pop ds
     popa
-    add esp 8
-    sti
+    add esp, 8
     iret

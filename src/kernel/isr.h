@@ -82,9 +82,9 @@ unsigned char* exception_msgs[] =
     "Reserved",
     "Reserved",
     "Reserved",
-}
+};
 
 void init_isr();
 void fault_handler(t_regs* r);
-
-
+void irq_handler(t_regs* r);
+#endif

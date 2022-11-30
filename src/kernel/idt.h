@@ -1,4 +1,4 @@
-#define IDT_NULL {.base_low = 0, .base_high = 0, .sel = 0, .reserved = 0, .flags = 0}
+#define IDT_NULL (t_idt_entry){0, 0, 0, 0, 0}
 typedef struct idt_entry
 {
     unsigned short base_low;            // Low bits of base address (function pointer to ISR)
@@ -19,5 +19,5 @@ t_idt_entry idt[256];       // 256 entry table of idt
 t_idt_ptr p_idt;
 
 extern void idt_load();
-void register_isr(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags);
+void set_idt_entry(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags);
 void init_idt();

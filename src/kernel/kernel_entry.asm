@@ -1,6 +1,7 @@
 [bits 32]
-[extern _main]
-call _main
+[global _start]
+[extern main]
+section .text
 %include "idt.asm"
-
+call main
 jmp $
