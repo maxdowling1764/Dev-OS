@@ -7,7 +7,11 @@
 
 #define SET_EXC_MSG(num, msg) \
     exception_msgs[num]= msg
+
+#define GENERAL_EXC_MSG "Unhandled Exception: "
+
 static char* exception_msgs[32]; 
+
 void init_isr()
 {
     SET_EXC_MSG(0, "Div by Zero\0");
@@ -86,6 +90,7 @@ void fault_handler(t_regs* r)
     if (r->int_code < 32)
     {
         // TODO Import Print String from refactored vga.h
+        print_str(GENERAL_EXC_MSG, BLACK, RED);
         print_str(exception_msgs[r->int_code], BLACK, RED);
         char* hang_msg = "\nHanging...\n\0";
         print_str(hang_msg, BLACK, RED);
