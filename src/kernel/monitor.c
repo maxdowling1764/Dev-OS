@@ -3,7 +3,12 @@
 static t_TermCTX context;
 static t_Cursor cursor;
 
-t_TermCTX* p_context = &context;
+static t_TermCTX* p_context;
+
+t_TermCTX* get_context()
+{
+    return p_context;
+}
 
 void init_monitor(char* vaddr)
 {
@@ -11,6 +16,7 @@ void init_monitor(char* vaddr)
     cursor.m_y = 0;
     context.m_video_mem = vaddr;
     context.m_cursor = &cursor;
+    p_context = &context;
 }
 
 char* get_vga_addr(int row, int col)
@@ -63,13 +69,15 @@ void scroll()
     }
 }
 
-void print_str(char* str, unsigned char backColor, unsigned char foreColor)
+void print_str(const char* str, unsigned char backColor, unsigned char foreColor)
 {
     int attr = (foreColor) | (backColor << 4);
     char* curr_vga_addr = context.m_video_mem;
-    while(*str)
+    char* curr_char = str;
+
+    while(*curr_char)
     {
-        if(*str == '\n')
+        if(*curr_char == '\n')
         {
             cursor.m_x++;
             cursor.m_y = 0;
@@ -77,12 +85,12 @@ void print_str(char* str, unsigned char backColor, unsigned char foreColor)
         else
         {
             curr_vga_addr = get_cursor_addr();
-            *curr_vga_addr = *str;
+            *curr_vga_addr = *curr_char;
             curr_vga_addr++;
             *curr_vga_addr = attr;
             cursor.m_y++;
         }
-        str++;
+        curr_char++;
     }
 }
 

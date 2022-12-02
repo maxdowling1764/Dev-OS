@@ -1,8 +1,5 @@
-#ifndef IDT_H
-#define IDT_H
-
-#include "idt.h"
-
+#ifndef ISR_H
+#define ISR_H
 extern void isr0();
 extern void isr1();
 extern void isr2();
@@ -46,43 +43,6 @@ typedef struct regs
     unsigned int int_code, err_code;
     unsigned int eip, cs, eflags, useresp, ss;
 } t_regs;
-
-unsigned char* exception_msgs[] = 
-{
-    "Div by Zero",
-    "Debug",
-    "NMI",
-    "Breakpoint",
-    "Overflow",
-    "Out of Bounds",
-    "Invalid Opcode",
-    "No Coprocessor",
-    "Double Fault",
-    "Coprocessor Segment Overrun",
-    "Bad TSS",
-    "Segment Not Present",
-    "Stack Fault",
-    "General Protection",
-    "Page Fault",
-    "Unknown Interrupt",
-    "Coprocessor Fault",
-    "Alignment Check",
-    "Machine Check",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-    "Reserved",
-};
 
 void init_isr();
 void fault_handler(t_regs* r);

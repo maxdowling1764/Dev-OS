@@ -1,3 +1,5 @@
+#ifndef IDT_H
+#define IDT_H
 #define IDT_NULL (t_idt_entry){0, 0, 0, 0, 0}
 typedef struct idt_entry
 {
@@ -21,3 +23,4 @@ t_idt_ptr p_idt;
 extern void idt_load();
 void set_idt_entry(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags);
 void init_idt();
+#endif
