@@ -1,3 +1,5 @@
+#ifndef MONITOR_H
+#define MONITOR_H
 enum Colors
 {
     BLACK,
@@ -30,11 +32,9 @@ typedef struct TermCTX
     t_Cursor* m_cursor;
 } t_TermCTX;
 
-static t_TermCTX context;
-static t_Cursor cursor;
-
 char* get_vga_addr(char* video_mem, int row, int col);
 char* get_cursor_addr(char* video_mem, t_Cursor* p_cursor);
 void clear_term(t_TermCTX* context);
 void scroll(t_TermCTX* context);
 void print_str(char* str, t_TermCTX* context, unsigned char backColor, unsigned char foreColor);
+#endif
