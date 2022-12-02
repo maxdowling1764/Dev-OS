@@ -32,9 +32,13 @@ typedef struct TermCTX
     t_Cursor* m_cursor;
 } t_TermCTX;
 
-char* get_vga_addr(char* video_mem, int row, int col);
-char* get_cursor_addr(char* video_mem, t_Cursor* p_cursor);
-void clear_term(t_TermCTX* context);
-void scroll(t_TermCTX* context);
-void print_str(char* str, t_TermCTX* context, unsigned char backColor, unsigned char foreColor);
+extern t_TermCTX* p_context;
+
+
+void init_monitor(char* vaddr);
+char* get_vga_addr(int row, int col);
+char* get_cursor_addr();
+void clear_term();
+void scroll();
+void print_str(char* str, unsigned char backColor, unsigned char foreColor);
 #endif
