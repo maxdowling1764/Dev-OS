@@ -53,7 +53,7 @@ ISR_NO_ERR 9
 
 %assign i 0
 %assign j 32
-%rep 15
+%rep 16
     IRQ i, j
 %assign i i + 1
 %assign j j + 1
@@ -84,6 +84,7 @@ isr_comm:
     pop ds 
     popa
     add esp, 8
+    sti
     iret
 
 irq_comm:
@@ -110,4 +111,5 @@ irq_comm:
     pop ds
     popa
     add esp, 8
+    sti
     iret

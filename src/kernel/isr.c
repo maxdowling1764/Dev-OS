@@ -80,11 +80,6 @@ void init_isr()
     INIT_ISR(31);
 }
 
-void irq_handler(t_regs* r)
-{
-    return;
-}
-
 void fault_handler(t_regs* r)
 {
     if (r->int_code < 32)

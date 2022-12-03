@@ -1,5 +1,7 @@
 #ifndef ISR_H
 #define ISR_H
+#include "common.h"
+
 extern void isr0();
 extern void isr1();
 extern void isr2();
@@ -35,14 +37,6 @@ extern void isr28();
 extern void isr29();
 extern void isr30();
 extern void isr31();
-
-typedef struct regs 
-{
-    unsigned int gs, fs, es, ds;
-    unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax;
-    unsigned int int_code, err_code;
-    unsigned int eip, cs, eflags, useresp, ss;
-} t_regs;
 
 void init_isr();
 void fault_handler(t_regs* r);
