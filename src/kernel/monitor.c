@@ -94,4 +94,23 @@ void print_str(const char* str, unsigned char backColor, unsigned char foreColor
     }
 }
 
+void putc(const char c, unsigned char backColor, unsigned char foreColor)
+{
+    int attr = (foreColor) | (backColor << 4);
+
+    char* curr_vga_addr = get_cursor_addr();
+
+    if(c == '\n')
+    {
+        cursor.m_x++;
+        cursor.m_y = 0;
+    }
+    else
+    {
+        *curr_vga_addr = c;
+        *(curr_vga_addr + 1) = attr;
+        cursor.m_y++;
+    }    
+}
+
 

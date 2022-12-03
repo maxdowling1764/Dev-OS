@@ -7,7 +7,25 @@
 
 static void* irq_handlers[16];
 
+#define DECL_IRQ(num)\
+    extern void irq##num()
 
+DECL_IRQ(0);
+DECL_IRQ(1);
+DECL_IRQ(2);
+DECL_IRQ(3);
+DECL_IRQ(4);
+DECL_IRQ(5);
+DECL_IRQ(6);
+DECL_IRQ(7);
+DECL_IRQ(8);
+DECL_IRQ(9);
+DECL_IRQ(10);
+DECL_IRQ(11);
+DECL_IRQ(12);
+DECL_IRQ(13);
+DECL_IRQ(14);
+DECL_IRQ(15);
 
 void init_irqs()
 {
@@ -36,6 +54,7 @@ void init_irqs()
     INIT_IRQ(14);
     INIT_IRQ(15);
     print_str("Initialized IRQs\n\0", BLACK, GREEN);
+    asm volatile ("sti");
 }
 void remap_pic(void)
 {
@@ -65,7 +84,7 @@ void irq_handler(t_regs* r)
 {
     void (*handler)(t_regs* r);
     handler = irq_handlers[r->int_code - 32];
-    print_str("IRQ Triggered\n\0", BLACK, GREEN);
+    
     if (handler)
     {
         handler(r);

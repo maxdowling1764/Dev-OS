@@ -102,7 +102,8 @@ irq_comm:
     
     mov eax, esp
     push eax
-    call irq_handler
+    mov eax, irq_handler
+    call eax
 
     pop eax
     pop gs
