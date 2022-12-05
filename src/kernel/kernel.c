@@ -2,6 +2,7 @@
 #include "idt.h"
 #include "isr.h"
 #include "irq.h"
+#include "gdt.h"
 #include "common.h"
 
 static unsigned char keymap[128];
@@ -79,8 +80,15 @@ void main()
     init_isr();
     init_irqs();
     set_irq_handler(1, keyboard_handler);
-    unsigned short* gdt_ptr = 0x1000;
-    print_hex(*(gdt_ptr), BLACK, YELLOW);
+    
+    t_gdt_desc d = *((t_gdt_desc*) GDTPTR_OFFSET);
+
+    typedef struct test 
+    {
+        char c;
+    } t_test;
+
+    *(video_mem) = 'c';
     for(;;)
     {
     } 
