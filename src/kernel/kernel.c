@@ -73,13 +73,14 @@ void main()
     char* video_mem = (char*) 0xb8000;
     char* k_start_msg = "Started Kernel\n\0";
     init_monitor(video_mem); 
-    clear_term();
+    //clear_term();
     print_str(k_start_msg, BLACK, LIGHT_GREEN);
     init_idt();
     init_isr();
     init_irqs();
     set_irq_handler(1, keyboard_handler);
-    
+    unsigned short* gdt_ptr = 0x1000;
+    print_hex(*(gdt_ptr), BLACK, YELLOW);
     for(;;)
     {
     } 

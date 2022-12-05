@@ -1,6 +1,6 @@
 [org 0x7c00]
-KERNEL_OFFSET equ 0x1000
-
+KERNEL_OFFSET equ 0x1003
+GDTPTR_OFFSET equ 0x1000
 mov [BOOT_DRIVE], dl
 
 mov bp, 0x9000
@@ -8,6 +8,10 @@ mov sp, bp
 
 mov bx, msg
 call print_str
+
+mov bx, [gdt_descriptor]
+call print_hex
+
 call load_kernel
 call switch_to_pm
 
@@ -56,6 +60,7 @@ load_kernel:
 begin_pm:
     mov bx, msg_pm
     call print_str_pm
+    sgdt [GDTPTR_OFFSET]
     call KERNEL_OFFSET
     jmp $
 

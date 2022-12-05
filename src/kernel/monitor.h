@@ -42,4 +42,5 @@ void clear_term();
 void scroll();
 void print_str(const char* str, unsigned char backColor, unsigned char foreColor);
 void putc(const char c, unsigned char backColor, unsigned char foreColor);
+void print_hex(unsigned short c, unsigned char backColor, unsigned char foreColor);
 #endif

@@ -94,6 +94,27 @@ void print_str(const char* str, unsigned char backColor, unsigned char foreColor
     }
 }
 
+void print_hex(unsigned short c, unsigned char backColor, unsigned char foreColor)
+{    
+    unsigned short curr_digit = c;          // Current digit aligned to the left
+    char curr_hex = '0';
+    for(int i = 0; i < 4; i++)
+    {
+        curr_digit = (c & 0xF000) >> 12;
+        c = c << 4;
+
+        if (curr_digit > 9)
+        {
+            curr_hex = 'A' + curr_digit - 10;
+        }
+        else
+        {
+            curr_hex = '0' + curr_digit;
+        }
+        putc(curr_hex, backColor, foreColor);
+    }
+}
+
 void putc(const char c, unsigned char backColor, unsigned char foreColor)
 {
     int attr = (foreColor) | (backColor << 4);
