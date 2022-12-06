@@ -1,4 +1,15 @@
 include defs.mk
+
+WIN_USER_NAME := "$(shell cmd.exe /c "echo %USERNAME%")"
+WSL_IMG_PATH := /mnt/c/Users/$(WIN_USER_NAME)/source/images
+WIN_IMG_PATH := "C:\\Users\\$(WIN_USER_NAME)\\source\\images"
+
+run: install
+	cmd.exe /c qemu-system-x86_64 $(WIN_IMG_PATH)\\os-image
+
+install: os-image
+	cp os-image $(WSL_IMG_PATH)
+
 clean:
 	rm bin/*
 	rm obj/kernel/*
