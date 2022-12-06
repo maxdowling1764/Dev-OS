@@ -76,19 +76,18 @@ void main()
     init_monitor(video_mem); 
     //clear_term();
     print_str(k_start_msg, BLACK, LIGHT_GREEN);
+    
+    init_gdt();
     init_idt();
     init_isr();
     init_irqs();
     set_irq_handler(1, keyboard_handler);
     
-    t_gdt_desc d = *((t_gdt_desc*) GDTPTR_OFFSET);
+    t_gdt_desc d = get_gdt_desc();
 
-    typedef struct test 
-    {
-        char c;
-    } t_test;
+    print_hex(d.limit, BLACK, RED);
+    print_hex_int(d.base, BLACK, YELLOW);
 
-    *(video_mem) = 'c';
     for(;;)
     {
     } 

@@ -10,7 +10,7 @@ $(BOOT_BIN): $(BOOT_SRC)
 	nasm -f bin -i $(SRC_DIR)/boot/ -o $@ $<
 
 $(KERNEL_BIN): $(KERNEL_ENTRY_OBJ) $(KERNEL_C_OBJS)
-	ld -melf_i386 -o $@ -Ttext 0x1003 $^ --oformat binary
+	ld -melf_i386 -o $@ -Tsrc/kernel/link.ld $^ --oformat binary
 
 $(OBJ_DIR)/kernel/%.o: $(SRC_DIR)/kernel/%.c
 	gcc -m32 -fno-pie -ffreestanding -c $< -o $@

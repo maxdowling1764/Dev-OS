@@ -1,5 +1,5 @@
 [org 0x7c00]
-KERNEL_OFFSET equ 0x1003
+KERNEL_OFFSET equ 0x1006
 GDTPTR_OFFSET equ 0x1000
 mov [BOOT_DRIVE], dl
 
@@ -10,6 +10,10 @@ mov bx, msg
 call print_str
 
 mov bx, [gdt_descriptor]
+call print_hex
+mov bx, [gdt_descriptor + 2]
+call print_hex
+mov bx, [gdt_descriptor + 4]
 call print_hex
 
 call load_kernel
@@ -50,7 +54,7 @@ load_kernel:
     call print_str
 
     mov bx, KERNEL_OFFSET       ; Instruct disk to load at address of KERNEL_OFFSET
-    mov dh, 15                  ; Instruct disk to load 15 sectors 
+    mov dh, 24                  ; Instruct disk to load 15 sectors 
     mov dl, [BOOT_DRIVE]        ; Instruct to load from disk 0
     call disk_load              ; Execute load
     ret

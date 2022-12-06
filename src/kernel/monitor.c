@@ -115,6 +115,28 @@ void print_hex(unsigned short c, unsigned char backColor, unsigned char foreColo
     }
 }
 
+void print_hex_int(unsigned int c, unsigned char backColor, unsigned char foreColor)
+{    
+    unsigned int curr_digit = c;          // Current digit aligned to the left
+    char curr_hex = '0';
+    for(int i = 0; i < 8; i++)
+    {
+        curr_digit = (c & 0xF0000000) >> 28;
+        c = c << 4;
+
+        if (curr_digit > 9)
+        {
+            curr_hex = 'A' + curr_digit - 10;
+        }
+        else
+        {
+            curr_hex = '0' + curr_digit;
+        }
+        putc(curr_hex, backColor, foreColor);
+    }
+}
+
+
 void putc(const char c, unsigned char backColor, unsigned char foreColor)
 {
     int attr = (foreColor) | (backColor << 4);

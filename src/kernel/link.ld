@@ -1,7 +1,7 @@
 ENTRY(start)
 SECTIONS
 {
-	.text 0x100F :
+	.text 0x1006 :
 	{
 		code = .; _code = .; __code = .;
 		*(.text)

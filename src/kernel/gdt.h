@@ -23,4 +23,7 @@ typedef struct gdt_desc_unpacked
     unsigned short limit;
     unsigned int base;
 } t_gdt_desc_unpacked;
+
+void init_gdt();
+t_gdt_desc get_gdt_desc();
 #endif
