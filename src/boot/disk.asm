@@ -19,6 +19,4 @@ disk_load:
     ret
 
 disk_err:
-    mov bx, DISK_ERR_MSG
-    call print_str
     jmp $

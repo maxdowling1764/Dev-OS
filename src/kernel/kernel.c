@@ -83,10 +83,9 @@ void main()
     init_irqs();
     set_irq_handler(1, keyboard_handler);
     
-    t_gdt_desc d = get_gdt_desc();
+    t_gdt_entry d = get_gdt_entry(1);
 
     print_hex(d.limit, BLACK, RED);
-    print_hex_int(d.base, BLACK, YELLOW);
 
     for(;;)
     {
