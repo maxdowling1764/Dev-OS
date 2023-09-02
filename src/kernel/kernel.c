@@ -77,16 +77,16 @@ void main()
     //clear_term();
     print_str(k_start_msg, BLACK, LIGHT_GREEN);
     
-    init_gdt();
+    t_p_gdt gdt_ptr = init_gdt();
     init_idt();
     init_isr();
     init_irqs();
     set_irq_handler(1, keyboard_handler);
     
-    t_gdt_entry d = get_gdt_entry(1);
-
+    t_gdt_entry d = get_gdt_entry(1, &gdt_ptr);
+    t_gdt_entry d2 = get_gdt_entry(2, &gdt_ptr);
     print_hex(d.limit, BLACK, RED);
-
+    print_hex(d2.limit, BLACK, GREEN);
     for(;;)
     {
     } 

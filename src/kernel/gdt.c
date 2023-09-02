@@ -1,36 +1,27 @@
 #include "gdt.h"
 
-static t_gdt_desc* p_gdt_desc;
-static t_gdt_entry* gdt_entries;
-static int num_gdt_entries;
-
-void init_gdt()
+t_p_gdt init_gdt()
 {
-    p_gdt_desc = (t_gdt_desc*) GDTPTR_OFFSET;
-
-    t_gdt_desc desc = get_gdt_desc();
-    gdt_entries = (t_gdt_entry*) desc.base;
-    num_gdt_entries = desc.limit / sizeof(t_gdt_entry);
+    t_gdt_desc* p_desc =(t_gdt_desc*)GDTPTR_OFFSET; 
+    return (t_p_gdt) {
+	    .p_desc=p_desc, 
+	    .p_entries=(t_gdt_entry*)(p_desc->base), 
+	    .num_entries=(p_desc->limit/sizeof(t_gdt_entry))};
 }
 
-t_gdt_desc get_gdt_desc()
+t_gdt_entry get_gdt_entry(const int idx, const t_p_gdt* gdt)
 {
-    return *p_gdt_desc;
-}
-
-t_gdt_entry get_gdt_entry(int idx)
-{
-    if(idx < num_gdt_entries)
+    if(idx < gdt->num_entries)
     {
-        return gdt_entries[idx];
+        return gdt->p_entries[idx];
     }
     return (t_gdt_entry){.base_hi = 0, .base_lo = 0, .base_mid = 0, .limit =0, .limit_flags = 0, .type_flags = 0};
 }
 
-void set_gdt_entry(int idx, t_gdt_entry* entry)
+void set_gdt_entry(const int idx, const t_p_gdt* gdt, const t_gdt_entry* entry)
 {
-    if(idx < num_gdt_entries)
+    if(idx < gdt->num_entries)
     {
-        gdt_entries[idx] = *entry;
+        gdt->p_entries[idx] = *entry;
     }
 }
