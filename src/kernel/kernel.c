@@ -4,30 +4,8 @@
 #include "irq.h"
 #include "gdt.h"
 #include "common.h"
+#include "keyboard.h"
 
-static unsigned char keymap[128];
-
-void keyboard_handler(t_regs* r)
-{
-    unsigned char scancode;
-    scancode = inportb(0x60);
-
-    if (scancode & 0x80)
-    {
-    }
-    else
-    {
-        putc(keymap[scancode], BLACK, LIGHT_GREEN);
-    }   
-}
-
-void arr_copy(unsigned char* src, unsigned char* dest, int size)
-{
-    for (int i = 0; i < size; i++)
-    {
-        *(dest+i) = *(src+i);
-    }
-}
 
 void main()
 {
@@ -70,7 +48,8 @@ void main()
         0,	/* F12 Key */
         0,	/* All other keys are undefined */
     };
-    arr_copy(kbdus, keymap, 128);
+
+    arr_copy(kbdus, get_keymap(), 128);
     char* video_mem = (char*) 0xb8000;
     char* k_start_msg = "Started Kernel\n\0";
     init_monitor(video_mem); 
