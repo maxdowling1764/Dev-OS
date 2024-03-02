@@ -118,7 +118,7 @@ void main()
     init_isr();
     init_irqs();
     set_irq_handler(1, keyboard_handler);
-    print_mmap(5);
+    print_mmap(11);
     for(;;)
     {
     } 
