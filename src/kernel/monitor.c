@@ -3,20 +3,27 @@
 static t_TermCTX context;
 static t_Cursor cursor;
 
-static t_TermCTX* p_context;
-
-t_TermCTX* get_context()
+t_Cursor createCursor(int x, int y)
 {
-    return p_context;
+	t_Cursor res = {
+		.m_x = 0,
+		.m_y = 0
+	};
+	return res;
+}
+
+t_TermCTX createContext(char* vaddr)
+{
+	t_TermCTX newContext =  {
+		.m_video_mem = vaddr,
+		.m_cursor = createCursor(0, 0)
+	};
+	return newContext;
 }
 
 void init_monitor(char* vaddr)
 {
-    cursor.m_x = 0;
-    cursor.m_y = 0;
-    context.m_video_mem = vaddr;
-    context.m_cursor = &cursor;
-    p_context = &context;
+	context = createContext(vaddr);
 }
 
 char* get_vga_addr(int row, int col)
@@ -94,8 +101,9 @@ void print_str(const char* str, unsigned char backColor, unsigned char foreColor
     }
 }
 
-void print_hex(unsigned short c, unsigned char backColor, unsigned char foreColor)
-{    
+void put0xShort(unsigned short c, unsigned char backColor, unsigned char foreColor)
+{   
+    print_str("0x", backColor, foreColor);	
     unsigned short curr_digit = c;          // Current digit aligned to the left
     char curr_hex = '0';
     for(int i = 0; i < 4; i++)
@@ -115,8 +123,9 @@ void print_hex(unsigned short c, unsigned char backColor, unsigned char foreColo
     }
 }
 
-void print_hex_int(unsigned int c, unsigned char backColor, unsigned char foreColor)
-{    
+void put0xInt(unsigned int c, unsigned char backColor, unsigned char foreColor)
+{
+    print_str("0x", backColor, foreColor);	
     unsigned int curr_digit = c;          // Current digit aligned to the left
     char curr_hex = '0';
     for(int i = 0; i < 8; i++)
