@@ -51,6 +51,6 @@ init_mmap:
         popa
         ret
 
-    .failed
+    .failed:
         popa
         ret

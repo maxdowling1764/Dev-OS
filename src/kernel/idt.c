@@ -1,4 +1,7 @@
 #include "idt.h"
+ 
+t_idt_entry idt[256];       // 256 entry table of idt
+t_idt_ptr p_idt;
 
 void set_idt_entry(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags)
 {

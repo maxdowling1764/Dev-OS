@@ -17,9 +17,6 @@ typedef struct idt_ptr
     unsigned int base;
 }__attribute__((packed)) t_idt_ptr;
 
-t_idt_entry idt[256];       // 256 entry table of idt
-t_idt_ptr p_idt;
-
 extern void idt_load();
 void set_idt_entry(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags);
 void init_idt();
