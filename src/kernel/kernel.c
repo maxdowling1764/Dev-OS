@@ -6,6 +6,63 @@
 #include "common.h"
 #include "keyboard.h"
 
+#define MMAP_OFFSET 0x1000
+
+// sizeof(uint64) = 32 + 32 = 64 bits = 8 bytes
+typedef struct t_uint64{
+	unsigned int low; 
+	unsigned int high;
+} uint64;
+
+void put0x_uInt64(uint64 a)
+{
+	put0xInt(a.low, BLACK, YELLOW);
+	put0xInt(a.high, BLACK, CYAN);
+}
+
+// sizeof(MemMapEntry) = 2 * sizeof(uint64) = 16 bytes;
+// + 2 * sizeof(uint32) = 8 bytes = 24 bytes;
+typedef struct {
+	uint64 base;
+	uint64 limit;
+	unsigned int type;
+	unsigned int ext;
+} MemMapEntry;
+
+void print_mmap_entry(MemMapEntry* mmap, char* tab)
+{
+		print_str(" Base: \0", BLACK, YELLOW);
+		put0x_uInt64(mmap->base); // Print Base
+		print_str(" | Limit: \0", BLACK, YELLOW);
+		put0x_uInt64(mmap->limit); // Print Limit
+	putc('\n', BLACK, YELLOW);
+		print_str(tab, BLACK, YELLOW);
+		print_str("Type: \0", BLACK, YELLOW);
+		put0xInt(mmap->type, BLACK, CYAN);
+		print_str(" | Extended: \0", BLACK, YELLOW);
+		put0xInt(mmap->ext, BLACK, CYAN);       // Print Extension
+	putc('\n', BLACK, YELLOW);
+}
+
+void print_mmap(unsigned int count)
+{
+	MemMapEntry* mmap = (MemMapEntry*)MMAP_OFFSET;
+	clear_term();
+	char* header = "Printing mmap\n\0";
+	char* msg2 = "offset \0";
+	char* tab =  "                    \0";
+	print_str(header, BLACK, YELLOW);
+	for(unsigned int i = 0; i < count; i++)
+	{
+		print_str(msg2, BLACK, YELLOW);
+		put0xInt(i, BLACK, GREEN);			// Print iteration count
+		putc(' ', BLACK, GREEN);
+		putc(':', BLACK, GREEN);
+		print_mmap_entry(mmap, tab);
+
+		mmap = (MemMapEntry*)(mmap + i);
+	}
+}
 
 void main()
 {
@@ -61,12 +118,10 @@ void main()
     init_isr();
     init_irqs();
     set_irq_handler(1, keyboard_handler);
-    
-    t_gdt_entry d = get_gdt_entry(1, &gdt_ptr);
-    t_gdt_entry d2 = get_gdt_entry(2, &gdt_ptr);
-    print_hex(d.limit, BLACK, RED);
-    print_hex(d2.limit, BLACK, GREEN);
+    print_mmap(5);
     for(;;)
     {
     } 
 }
+
+

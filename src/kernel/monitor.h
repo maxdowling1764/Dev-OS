@@ -29,11 +29,9 @@ typedef struct Cursor
 typedef struct TermCTX
 {
     char* m_video_mem;
-    t_Cursor* m_cursor;
+    t_Cursor m_cursor;
 } t_TermCTX;
 
-
-t_TermCTX* get_context();
 
 void init_monitor(char* vaddr);
 char* get_vga_addr(int row, int col);
@@ -42,7 +40,7 @@ void clear_term();
 void scroll();
 void print_str(const char* str, unsigned char backColor, unsigned char foreColor);
 void putc(const char c, unsigned char backColor, unsigned char foreColor);
-void print_hex(unsigned short c, unsigned char backColor, unsigned char foreColor);
-void print_hex_int(unsigned int c, unsigned char backColor, unsigned char foreColor);
+void put0xShort(unsigned short c, unsigned char backColor, unsigned char foreColor);
+void put0xInt(unsigned int c, unsigned char backColor, unsigned char foreColor);
 
 #endif
