@@ -1,5 +1,8 @@
 #ifndef MONITOR_H
 #define MONITOR_H
+#define TERM_WIDTH 80
+#define TERM_HEIGHT 25
+
 enum Colors
 {
     BLACK,
