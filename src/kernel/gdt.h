@@ -1,6 +1,6 @@
 #ifndef GDT_H
 #define GDT_H
-#define GDTPTR_OFFSET 0x1C02
+#define GDTPTR_OFFSET 0x10C02
 
 typedef struct gdt_entry
 {

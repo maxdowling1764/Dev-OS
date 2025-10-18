@@ -1,7 +1,7 @@
 [org 0x7c00]
-MMAP_OFFSET equ 0x1000
-GDTPTR_OFFSET equ 0x1C02 
-KERNEL_OFFSET equ 0x1C08
+MMAP_OFFSET equ 0x10000
+GDTPTR_OFFSET equ 0x10C02 
+KERNEL_OFFSET equ 0x10C08
 
 mov [BOOT_DRIVE], dl
 
@@ -9,8 +9,8 @@ mov bp, 0x9000
 mov sp, bp
 
 call load_kernel
-mov ax, 0
-mov es, ax
+mov ax, 0x1000
+mov es, ax          ; Load e820 mmap to segment at GDT[1] (Kernel data)
 call init_mmap
 call switch_to_pm
 
@@ -25,7 +25,9 @@ jmp $
 BOOT_DRIVE: db 0
 
 load_kernel:
-    mov bx, KERNEL_OFFSET       ; Instruct disk to load at address of KERNEL_OFFSET
+    mov ax, 0x1000
+    mov es, ax
+    mov bx, 0xc08       ; Instruct disk to load at address of KERNEL_OFFSET
     mov dh, 18                  ; Instruct disk to load 15 sectors 
     mov dl, [BOOT_DRIVE]        ; Instruct to load from disk 0
     call disk_load              ; Execute load
@@ -35,7 +37,7 @@ load_kernel:
 
 begin_pm:
     sgdt [GDTPTR_OFFSET]
-    call KERNEL_OFFSET
+    jmp CODE_SEG:KERNEL_OFFSET
     jmp $
 
 [bits 16]
