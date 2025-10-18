@@ -24,3 +24,4 @@ extern void idt_load();
 void set_idt_entry(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags);
 void init_idt();
 #endif
+

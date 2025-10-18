@@ -46,3 +46,4 @@ void print_hex(unsigned short c, unsigned char backColor, unsigned char foreColo
 void print_hex_int(unsigned int c, unsigned char backColor, unsigned char foreColor);
 
 #endif
+

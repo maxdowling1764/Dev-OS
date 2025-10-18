@@ -26,3 +26,4 @@ void init_idt()
     }
     idt_load();
 }
+
