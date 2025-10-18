@@ -50,7 +50,7 @@ void scroll()
     char* src_vga_addr = context.m_video_mem;
     char* dest_vga_addr = src_vga_addr;
 
-    for (int x = 1; x < 24; x++)
+    for (int x = 1; x < 25; x++)
     {
         for (int y = 0; y < 80; y++)
         {
@@ -63,7 +63,7 @@ void scroll()
 
     for (int y = 0; y < 80; y++)
     {
-        dest_vga_addr = get_vga_addr(25, y);
+        dest_vga_addr = get_vga_addr(24, y);
         *dest_vga_addr = 0;
         *(dest_vga_addr + 1) = 0x0f;
     }
@@ -153,6 +153,17 @@ void putc(const char c, unsigned char backColor, unsigned char foreColor)
         *curr_vga_addr = c;
         *(curr_vga_addr + 1) = attr;
         cursor.m_y++;
-    }    
+    }
+    if (cursor.m_y > 80) 
+    {
+        cursor.m_y = 0;
+        cursor.m_x++;
+    }
+    if(cursor.m_x > 24)
+    {
+	cursor.m_x = 24;
+	cursor.m_y = 0;
+        scroll();
+    }
 }
 
