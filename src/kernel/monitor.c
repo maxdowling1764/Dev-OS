@@ -97,6 +97,7 @@ void print_str(const char* str, unsigned char backColor, unsigned char foreColor
 void print_hex(unsigned short c, unsigned char backColor, unsigned char foreColor)
 {    
     unsigned short curr_digit = c;          // Current digit aligned to the left
+    print_str("0x", backColor, foreColor);
     char curr_hex = '0';
     for(int i = 0; i < 4; i++)
     {
@@ -118,6 +119,7 @@ void print_hex(unsigned short c, unsigned char backColor, unsigned char foreColo
 void print_hex_int(unsigned int c, unsigned char backColor, unsigned char foreColor)
 {    
     unsigned int curr_digit = c;          // Current digit aligned to the left
+    print_str("0x", backColor, foreColor);
     char curr_hex = '0';
     for(int i = 0; i < 8; i++)
     {
@@ -136,6 +138,26 @@ void print_hex_int(unsigned int c, unsigned char backColor, unsigned char foreCo
     }
 }
 
+void print_hex_byte(unsigned char c, unsigned char backColor, unsigned char foreColor)
+{
+    unsigned int curr_digit = c;          // Current digit aligned to the left
+    char curr_hex = '0';
+    for(int i = 0; i < 2; i++)
+    {
+        curr_digit = (c & 0xF0) >> 4;
+        c = c << 4;
+
+        if (curr_digit > 9)
+        {
+            curr_hex = 'A' + curr_digit - 10;
+        }
+        else
+        {
+            curr_hex = '0' + curr_digit;
+        }
+        putc(curr_hex, backColor, foreColor);
+    }
+}
 
 void putc(const char c, unsigned char backColor, unsigned char foreColor)
 {

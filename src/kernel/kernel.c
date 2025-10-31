@@ -6,6 +6,15 @@
 #include "common.h"
 #include "keyboard.h"
 
+void print_gdt_entry(t_gdt_entry* a)
+{
+    for(unsigned int k = 0; k < sizeof(t_gdt_entry); k++) 
+    { 
+        print_hex_byte((*((unsigned char*)a + k)), BLACK, LIGHT_GREEN);
+        putc(' ', BLACK, LIGHT_GREEN);
+    }
+    putc('\n', BLACK, LIGHT_GREEN);
+}
 
 void main()
 {
@@ -62,10 +71,16 @@ void main()
     init_irqs();
     set_irq_handler(1, keyboard_handler);
     
-    t_gdt_entry d = get_gdt_entry(1, &gdt_ptr);
-    t_gdt_entry d2 = get_gdt_entry(2, &gdt_ptr);
-    print_hex(d.limit, BLACK, RED);
-    print_hex(d2.limit, BLACK, GREEN);
+    print_str("GDTPTR OFFSET: ", BLACK, LIGHT_GREEN);
+    print_hex_int(GDTPTR_OFFSET, BLACK, LIGHT_GREEN);
+    print_str("-----", BLACK, LIGHT_GREEN); 
+    
+    for(int i = 0; i < gdt_ptr.num_entries; i++)
+    {
+	print_gdt_entry(&gdt_ptr.p_entries[i]);
+    }
+
+    
     for(;;)
     {
     } 

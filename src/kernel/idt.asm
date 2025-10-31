@@ -102,15 +102,13 @@ irq_comm:
     
     mov eax, esp
     push eax
-    mov eax, irq_handler
-    call eax
-
+    call irq_handler
     pop eax
     pop gs
     pop fs
     pop es
     pop ds
     popa
-    add esp, 8
+    add esp, 8 ; discard int_code and err_code from stack before calling iret
     sti
     iret

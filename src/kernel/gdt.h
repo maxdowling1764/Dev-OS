@@ -4,11 +4,12 @@
 
 typedef struct gdt_entry
 {
-    unsigned short limit;       // Size of segment
-    unsigned short base_lo;     // bits 0-15 of segment location
-    unsigned char base_mid;     // bits 16-23 of segment location
+    /* Note: limit_flags desc is listed in order of LSBs to MSBs */
+    unsigned short limit;       // bit 0-15 of limit
+    unsigned short base_lo;     // bits 0-15 of base 
+    unsigned char base_mid;     // bits 16-23 of base
     unsigned char type_flags;   // type of segment
-    unsigned char limit_flags;  // ???
+    unsigned char limit_flags;  // bits 16-20 of limit and flags 
     unsigned char base_hi;      // bits 24-32 of segment location
 }__attribute__((packed)) t_gdt_entry;
 
@@ -17,12 +18,6 @@ typedef struct gdt_desc
     unsigned short limit;
     unsigned int base;
 }__attribute__((packed)) t_gdt_desc;
-
-typedef struct gdt_desc_unpacked
-{
-    unsigned short limit;
-    unsigned int base;
-} t_gdt_desc_unpacked;
 
 typedef struct p_gdt
 {

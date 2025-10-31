@@ -2,7 +2,7 @@
 #define MONITOR_H
 #define TERM_WIDTH 80
 #define TERM_HEIGHT 25
-
+#define print_struct(s, a) for(unsigned int k = 0; k < sizeof(s); k++) { print_hex_int((unsigned int) (*(&a + k)), BLACK, LIGHT_GREEN); }
 enum Colors
 {
     BLACK,
@@ -46,6 +46,7 @@ void scroll();
 void print_str(const char* str, unsigned char backColor, unsigned char foreColor);
 void putc(const char c, unsigned char backColor, unsigned char foreColor);
 void print_hex(unsigned short c, unsigned char backColor, unsigned char foreColor);
+void print_hex_byte(unsigned char c, unsigned char backColor, unsigned char foreColor);
 void print_hex_int(unsigned int c, unsigned char backColor, unsigned char foreColor);
 
 #endif
