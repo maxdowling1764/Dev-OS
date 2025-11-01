@@ -6,6 +6,9 @@
 #include "common.h"
 #include "keyboard.h"
 
+#define offsetof(st, m) \
+    ((unsigned int)&(((st*)0)->m))
+
 void print_gdt_entry(t_gdt_entry* a)
 {
     for(unsigned int k = 0; k < sizeof(t_gdt_entry); k++) 
@@ -13,9 +16,29 @@ void print_gdt_entry(t_gdt_entry* a)
         print_hex_byte((*((unsigned char*)a + k)), BLACK, LIGHT_GREEN);
         putc(' ', BLACK, LIGHT_GREEN);
     }
+    print_str("||", BLACK, LIGHT_GREEN);
+    print_str("LIM: ", BLACK, LIGHT_GREEN);
+    unsigned int k = 0;
+    for(; k < sizeof(unsigned short); k++) 
+    { 
+        print_hex_byte((*((unsigned char*)a + k)), BLACK, LIGHT_GREEN);
+        putc(' ', BLACK, LIGHT_GREEN);
+    }
+    int k0 = offsetof(t_gdt_entry, limit_flags);
+    put_nibble(a->limit_flags, 0, BLACK, LIGHT_GREEN);
     putc('\n', BLACK, LIGHT_GREEN);
 }
-
+void print_gdt(t_p_gdt* gdt_ptr)
+{
+    print_str("GDTPTR OFFSET: ", BLACK, LIGHT_GREEN);
+    print_hex_int(GDTPTR_OFFSET, BLACK, LIGHT_GREEN);
+    print_str("\n-------------\n", BLACK, LIGHT_GREEN); 
+    
+    for(int i = 0; i < gdt_ptr->num_entries; i++)
+    {
+	print_gdt_entry(&gdt_ptr->p_entries[i]);
+    }
+}
 void main()
 {
     unsigned char kbdus[128] = 
@@ -70,15 +93,8 @@ void main()
     init_isr();
     init_irqs();
     set_irq_handler(1, keyboard_handler);
-    
-    print_str("GDTPTR OFFSET: ", BLACK, LIGHT_GREEN);
-    print_hex_int(GDTPTR_OFFSET, BLACK, LIGHT_GREEN);
-    print_str("-----", BLACK, LIGHT_GREEN); 
-    
-    for(int i = 0; i < gdt_ptr.num_entries; i++)
-    {
-	print_gdt_entry(&gdt_ptr.p_entries[i]);
-    }
+    print_gdt(&gdt_ptr);    
+ 
 
     
     for(;;)

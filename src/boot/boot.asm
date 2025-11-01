@@ -24,11 +24,15 @@ jmp $
 [bits 16]
 BOOT_DRIVE: db 0
 
+%ifndef KERNEL_SECTORS
+%define KERNEL_SECTORS 20
+%endif
+
 load_kernel:
     mov ax, 0x1000
     mov es, ax
     mov bx, 0xc08       ; Instruct disk to load at address of KERNEL_OFFSET
-    mov dh, 18                  ; Instruct disk to load 15 sectors 
+    mov dh, KERNEL_SECTORS                  ; Instruct disk to load 15 sectors 
     mov dl, [BOOT_DRIVE]        ; Instruct to load from disk 0
     call disk_load              ; Execute load
     ret

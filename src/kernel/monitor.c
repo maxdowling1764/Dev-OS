@@ -158,7 +158,21 @@ void print_hex_byte(unsigned char c, unsigned char backColor, unsigned char fore
         putc(curr_hex, backColor, foreColor);
     }
 }
-
+void put_nibble(const char c, int radix, unsigned char backColor, unsigned char foreColor)
+{
+    if (radix >= sizeof(char)*2) return;
+    char curr_hex = '0';
+    char digit = (c & 0xF << radix*4) >> radix*4;
+    if (digit > 9)
+    {
+        curr_hex = 'A' + digit - 10;
+    }
+    else
+    {
+        curr_hex = '0' + digit;
+    }
+    putc(curr_hex, backColor, foreColor);
+}
 void putc(const char c, unsigned char backColor, unsigned char foreColor)
 {
     if (cursor.m_y >= TERM_WIDTH) 

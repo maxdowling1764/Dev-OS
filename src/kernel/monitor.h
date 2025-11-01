@@ -48,6 +48,7 @@ void putc(const char c, unsigned char backColor, unsigned char foreColor);
 void print_hex(unsigned short c, unsigned char backColor, unsigned char foreColor);
 void print_hex_byte(unsigned char c, unsigned char backColor, unsigned char foreColor);
 void print_hex_int(unsigned int c, unsigned char backColor, unsigned char foreColor);
+void put_nibble(const char c, int radix, unsigned char backColor, unsigned char foreColor);
 
 #endif
 
