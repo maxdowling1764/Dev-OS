@@ -40,7 +40,7 @@ void* get_key_handler(unsigned int handle)
     }
 }
 
-void keyboard_handler(t_regs* r)
+void keyboard_handler(regs_t* r)
 {
     unsigned char scancode;
     scancode = inportb(0x60);

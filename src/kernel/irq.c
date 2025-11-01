@@ -70,7 +70,7 @@ void remap_pic(void)
     outportb(0xA1, 0x0);
 }
 
-void set_irq_handler(int idx, void (*handler)(t_regs* r))
+void set_irq_handler(int idx, void (*handler)(regs_t* r))
 {
     irq_handlers[idx] = handler;
 }
@@ -80,9 +80,9 @@ void init_irq_handler(int idx)
     irq_handlers[idx] = 0;
 }
 
-void irq_handler(t_regs* r)
+void irq_handler(regs_t* r)
 {
-    void (*handler)(t_regs* r);
+    void (*handler)(regs_t* r);
     handler = irq_handlers[r->int_code - 32];
     
     if (handler)

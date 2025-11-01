@@ -1,11 +1,11 @@
 #include "monitor.h"
 
-static t_TermCTX context;
-static t_Cursor cursor;
+static terminal_context_t context;
+static cursor_t cursor;
 
-static t_TermCTX* p_context;
+static terminal_context_t* p_context;
 
-t_TermCTX* get_context()
+terminal_context_t* get_context()
 {
     return p_context;
 }
@@ -14,14 +14,14 @@ void init_monitor(char* vaddr)
 {
     cursor.m_x = 0;
     cursor.m_y = 0;
-    context.m_video_mem = vaddr;
-    context.m_cursor = &cursor;
+    context.p_video_mem = vaddr;
+    context.p_cursor = &cursor;
     p_context = &context;
 }
 
 char* get_vga_addr(int row, int col)
 {
-    return context.m_video_mem + 2*TERM_WIDTH*row + 2*col;
+    return context.p_video_mem + 2*TERM_WIDTH*row + 2*col;
 }
 
 char* get_cursor_addr()
@@ -31,7 +31,7 @@ char* get_cursor_addr()
 
 void clear_term()
 {
-    char* curr_vga_addr = context.m_video_mem;
+    char* curr_vga_addr = context.p_video_mem;
     for(int x = 0; x < TERM_HEIGHT; x++)
     {
         for(int y = 0; y < TERM_WIDTH; y++)
@@ -47,7 +47,7 @@ void clear_term()
 
 void scroll()
 {
-    char* src_vga_addr = context.m_video_mem;
+    char* src_vga_addr = context.p_video_mem;
     char* dest_vga_addr = src_vga_addr;
 
     for (int x = 1; x < TERM_HEIGHT; x++)
@@ -69,10 +69,10 @@ void scroll()
     }
 }
 
-void print_str(const char* str, unsigned char backColor, unsigned char foreColor)
+void print_str(const char* str, color_t back_color, color_t fore_color)
 {
-    int attr = (foreColor) | (backColor << 4);
-    char* curr_vga_addr = context.m_video_mem;
+    int attr = (fore_color) | (back_color << 4);
+    char* curr_vga_addr = context.p_video_mem;
     char* curr_char = str;
 
     while(*curr_char)
@@ -94,10 +94,10 @@ void print_str(const char* str, unsigned char backColor, unsigned char foreColor
     }
 }
 
-void print_hex(unsigned short c, unsigned char backColor, unsigned char foreColor)
+void print_hex(unsigned short c, color_t back_color, color_t fore_color)
 {    
     unsigned short curr_digit = c;          // Current digit aligned to the left
-    print_str("0x", backColor, foreColor);
+    print_str("0x", back_color, fore_color);
     char curr_hex = '0';
     for(int i = 0; i < 4; i++)
     {
@@ -112,14 +112,14 @@ void print_hex(unsigned short c, unsigned char backColor, unsigned char foreColo
         {
             curr_hex = '0' + curr_digit;
         }
-        putc(curr_hex, backColor, foreColor);
+        putc(curr_hex, back_color, fore_color);
     }
 }
 
-void print_hex_int(unsigned int c, unsigned char backColor, unsigned char foreColor)
+void print_hex_int(unsigned int c, color_t back_color, color_t fore_color)
 {    
     unsigned int curr_digit = c;          // Current digit aligned to the left
-    print_str("0x", backColor, foreColor);
+    print_str("0x", back_color, fore_color);
     char curr_hex = '0';
     for(int i = 0; i < 8; i++)
     {
@@ -134,11 +134,11 @@ void print_hex_int(unsigned int c, unsigned char backColor, unsigned char foreCo
         {
             curr_hex = '0' + curr_digit;
         }
-        putc(curr_hex, backColor, foreColor);
+        putc(curr_hex, back_color, fore_color);
     }
 }
 
-void print_hex_byte(unsigned char c, unsigned char backColor, unsigned char foreColor)
+void print_hex_byte(unsigned char c, color_t back_color, color_t fore_color)
 {
     unsigned int curr_digit = c;          // Current digit aligned to the left
     char curr_hex = '0';
@@ -155,10 +155,10 @@ void print_hex_byte(unsigned char c, unsigned char backColor, unsigned char fore
         {
             curr_hex = '0' + curr_digit;
         }
-        putc(curr_hex, backColor, foreColor);
+        putc(curr_hex, back_color, fore_color);
     }
 }
-void put_nibble(const char c, int radix, unsigned char backColor, unsigned char foreColor)
+void put_nibble(const char c, int radix, color_t back_color, color_t fore_color)
 {
     if (radix >= sizeof(char)*2) return;
     char curr_hex = '0';
@@ -171,9 +171,9 @@ void put_nibble(const char c, int radix, unsigned char backColor, unsigned char 
     {
         curr_hex = '0' + digit;
     }
-    putc(curr_hex, backColor, foreColor);
+    putc(curr_hex, back_color, fore_color);
 }
-void putc(const char c, unsigned char backColor, unsigned char foreColor)
+void putc(const char c, color_t back_color, color_t fore_color)
 {
     if (cursor.m_y >= TERM_WIDTH) 
     {
@@ -187,7 +187,7 @@ void putc(const char c, unsigned char backColor, unsigned char foreColor)
         scroll();
     }
 
-    int attr = (foreColor) | (backColor << 4);
+    int attr = (fore_color) | (back_color << 4);
 
     char* curr_vga_addr = get_cursor_addr();
 

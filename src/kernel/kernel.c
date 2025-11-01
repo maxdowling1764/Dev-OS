@@ -9,9 +9,9 @@
 #define offsetof(st, m) \
     ((unsigned int)&(((st*)0)->m))
 
-void print_gdt_entry(t_gdt_entry* a)
+void print_gdt_entry(gdt_entry_t* a)
 {
-    for(unsigned int k = 0; k < sizeof(t_gdt_entry); k++) 
+    for(unsigned int k = 0; k < sizeof(gdt_entry_t); k++) 
     { 
         print_hex_byte((*((unsigned char*)a + k)), BLACK, LIGHT_GREEN);
         putc(' ', BLACK, LIGHT_GREEN);
@@ -23,11 +23,11 @@ void print_gdt_entry(t_gdt_entry* a)
     { 
         print_hex_byte((*((unsigned char*)a + k)), BLACK, LIGHT_GREEN);
     }
-    int k0 = offsetof(t_gdt_entry, limit_flags);
+    int k0 = offsetof(gdt_entry_t, limit_flags);
     put_nibble(a->limit_flags, 0, BLACK, LIGHT_GREEN);
     putc('\n', BLACK, LIGHT_GREEN);
 }
-void print_gdt(t_p_gdt* gdt_ptr)
+void print_gdt(gdt_pointer_t* gdt_ptr)
 {
     print_str("GDTPTR OFFSET: ", BLACK, LIGHT_GREEN);
     print_hex_int(GDTPTR_OFFSET, BLACK, LIGHT_GREEN);
@@ -87,7 +87,7 @@ void main()
     //clear_term();
     print_str(k_start_msg, BLACK, LIGHT_GREEN);
     
-    t_p_gdt gdt_ptr = init_gdt();
+    gdt_pointer_t gdt_ptr = init_gdt();
     init_idt();
     init_isr();
     init_irqs();

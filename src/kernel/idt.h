@@ -1,6 +1,6 @@
 #ifndef IDT_H
 #define IDT_H
-#define IDT_NULL (t_idt_entry){0, 0, 0, 0, 0}
+#define IDT_NULL (idt_entry_t){0, 0, 0, 0, 0}
 typedef struct idt_entry
 {
     unsigned short base_low;            // Low bits of base address (function pointer to ISR)
@@ -9,16 +9,16 @@ typedef struct idt_entry
     unsigned char flags;
     unsigned short base_high;           // High bits of base address 
  
-}__attribute__((packed)) t_idt_entry;
+}__attribute__((packed)) idt_entry_t;
 
 typedef struct idt_ptr
 {
     unsigned short limit;
     unsigned int base;
-}__attribute__((packed)) t_idt_ptr;
+}__attribute__((packed)) idt_pointer_t;
 
-t_idt_entry idt[256];       // 256 entry table of idt
-t_idt_ptr p_idt;
+idt_entry_t idt[256];       // 256 entry table of idt
+idt_pointer_t p_idt;
 
 extern void idt_load();
 void set_idt_entry(unsigned char num, unsigned long base, unsigned short sel, unsigned char flags);

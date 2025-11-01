@@ -39,6 +39,6 @@ extern void isr30();
 extern void isr31();
 
 void init_isr();
-void fault_handler(t_regs* r);
-void irq_handler(t_regs* r);
+void fault_handler(regs_t* r);
+void irq_handler(regs_t* r);
 #endif

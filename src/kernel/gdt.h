@@ -11,22 +11,22 @@ typedef struct gdt_entry
     unsigned char type_flags;   // type of segment
     unsigned char limit_flags;  // bits 16-20 of limit and flags 
     unsigned char base_hi;      // bits 24-32 of segment location
-}__attribute__((packed)) t_gdt_entry;
+}__attribute__((packed)) gdt_entry_t;
 
-typedef struct gdt_desc
+typedef struct gdt_descriptor
 {
     unsigned short limit;
     unsigned int base;
-}__attribute__((packed)) t_gdt_desc;
+}__attribute__((packed)) gdt_descriptor_t;
 
-typedef struct p_gdt
+typedef struct gdt_pointer
 {
-    t_gdt_desc* p_desc;
-    t_gdt_entry* p_entries;
+    gdt_descriptor_t* p_desc;
+    gdt_entry_t* p_entries;
     unsigned int num_entries;
-} t_p_gdt;
+} gdt_pointer_t;
 
-t_p_gdt init_gdt();
-t_gdt_entry get_gdt_entry(int idx, const t_p_gdt* gdt);
-void set_gdt_entry(const int idx, const t_p_gdt* gdt, const t_gdt_entry* entry);
+gdt_pointer_t init_gdt();
+gdt_entry_t get_gdt_entry(int idx, const gdt_pointer_t* gdt);
+void set_gdt_entry(const int idx, const gdt_pointer_t* gdt, const gdt_entry_t* entry);
 #endif
