@@ -175,7 +175,7 @@ void put_nibble(const char c, int radix, color_t back_color, color_t fore_color)
 }
 void putc(const char c, color_t back_color, color_t fore_color)
 {
-    if (cursor.m_y >= TERM_WIDTH) 
+    if (cursor.m_y >= TERM_WIDTH && c != '\n') 
     {
         cursor.m_y = 0;
         cursor.m_x++;
@@ -186,7 +186,6 @@ void putc(const char c, color_t back_color, color_t fore_color)
 	cursor.m_y = 0;
         scroll();
     }
-
     int attr = (fore_color) | (back_color << 4);
 
     char* curr_vga_addr = get_cursor_addr();
@@ -194,6 +193,11 @@ void putc(const char c, color_t back_color, color_t fore_color)
     if(c == '\n')
     {
         cursor.m_x++;
+        if(cursor.m_x >= TERM_HEIGHT)
+        {
+	    cursor.m_x = TERM_HEIGHT-1;
+            scroll();
+        }
         cursor.m_y = 0;
     }
     else
@@ -202,5 +206,7 @@ void putc(const char c, color_t back_color, color_t fore_color)
         *(curr_vga_addr + 1) = attr;
         cursor.m_y++;
     }
+
+
 }
 
