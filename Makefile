@@ -3,7 +3,7 @@ include defs.mk
 WIN_USER_NAME := "$(shell cmd.exe /c "echo %USERNAME%")"
 WSL_IMG_PATH := /mnt/c/Users/$(WIN_USER_NAME)/source/images
 WIN_IMG_PATH := "C:\\Users\\$(WIN_USER_NAME)\\source\\images"
-KERN_SIZE := $(shell expr \( $$(stat -c%s $(KERNEL_BIN)) / 512 \) + 1) 
+KERN_SIZE_FILE :=$(BIN_DIR)/kernel.size
 run: install
 	cmd.exe /c qemu-system-x86_64 $(WIN_IMG_PATH)\\os-image
 
@@ -14,11 +14,18 @@ clean:
 	rm bin/*
 	rm obj/kernel/*
 
-os-image: $(BIN_DIR)/boot.bin $(BIN_DIR)/kernel.bin
+os-image: $(BOOT_BIN) $(KERNEL_BIN)
 	cat $^ > $@
 
-$(BOOT_BIN): $(BOOT_SRC) $(KERNEL_BIN)
-	nasm -f bin -d KERNEL_SECTORS=$(KERN_SIZE) -i $(SRC_DIR)/boot/ -o $@ $<
+$(BOOT_BIN): $(BOOT_SRC) $(KERN_SIZE_FILE)
+	size=$$(cat $(KERN_SIZE_FILE)); \
+	nasm -f bin -dKERNEL_SECTORS=$$size -i $(SRC_DIR)/boot/ -o $@ $<
+
+# Hack to make sure build of boot.bin is dependent on eval of 'stat -c%s bin/kernel.bin'
+$(KERN_SIZE_FILE): $(KERNEL_BIN)
+	size=$$(stat -c%s "$<"); \
+	expr $$size / 512 + 1 > $@
+	
 
 $(KERNEL_BIN): $(KERNEL_ENTRY_OBJ) $(KERNEL_C_OBJS)
 	ld -melf_i386 -o $@ -Tsrc/kernel/link.ld $^ --oformat binary

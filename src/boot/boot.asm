@@ -25,7 +25,7 @@ jmp $
 BOOT_DRIVE: db 0
 
 %ifndef KERNEL_SECTORS
-%define KERNEL_SECTORS 20
+%define KERNEL_SECTORS 15
 %endif
 
 load_kernel:

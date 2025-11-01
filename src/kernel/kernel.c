@@ -22,7 +22,6 @@ void print_gdt_entry(t_gdt_entry* a)
     for(; k < sizeof(unsigned short); k++) 
     { 
         print_hex_byte((*((unsigned char*)a + k)), BLACK, LIGHT_GREEN);
-        putc(' ', BLACK, LIGHT_GREEN);
     }
     int k0 = offsetof(t_gdt_entry, limit_flags);
     put_nibble(a->limit_flags, 0, BLACK, LIGHT_GREEN);
