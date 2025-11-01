@@ -1,7 +1,7 @@
 ENTRY(start)
 SECTIONS
 {
-	.text 0x10c08 :
+	.text 0x08c08 :
 	{
 		code = .; _code = .; __code = .;
 		*(.text)

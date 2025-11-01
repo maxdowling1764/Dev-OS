@@ -5,9 +5,30 @@
 #include "gdt.h"
 #include "common.h"
 #include "keyboard.h"
+#include "mmap.h"
 
 #define offsetof(st, m) \
     ((unsigned int)&(((st*)0)->m))
+
+void print_mmap_entry(e820_entry_t entry)
+{
+    print_hex_int(entry.base_hi, BLACK, LIGHT_GREEN);
+    putc(' ', BLACK, LIGHT_GREEN);
+    print_hex_int(entry.base_low, BLACK, LIGHT_GREEN);
+    print_str(" || ", BLACK, LIGHT_GREEN);
+    print_hex_int(entry.lim_hi, BLACK, LIGHT_GREEN);
+    putc(' ', BLACK, LIGHT_GREEN);
+    print_hex_int(entry.lim_low, BLACK, LIGHT_GREEN);
+    putc('\n', BLACK, LIGHT_GREEN);
+}
+
+void print_mmap()
+{
+    for (unsigned int i = 0; i < mmap_get_count(); i++)
+    {
+        print_mmap_entry(mmap_get_entry(i));
+    }
+}
 
 void print_gdt_entry(gdt_entry_t* a)
 {
@@ -92,7 +113,8 @@ void main()
     init_isr();
     init_irqs();
     set_irq_handler(1, keyboard_handler);
-    print_gdt(&gdt_ptr);    
+    print_gdt(&gdt_ptr);
+    print_mmap();   
  
 
     

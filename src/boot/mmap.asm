@@ -1,6 +1,6 @@
 init_mmap:
     pusha
-    mov di, MMAP_OFFSET + 2      ; location of mmap starts at n_mmap + offset of 2 bytes for n_mmap 
+    mov di, MMAP_OFFSET + 4
     xor ebx, ebx
     xor bp, bp
     mov edx, 0x0534D4150    ; "SMAP" -> edx
