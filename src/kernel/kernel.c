@@ -24,6 +24,7 @@ void print_mmap_entry(e820_entry_t entry)
 
 void print_mmap()
 {
+    print_str("MMAP BASE_HI BASE_LOW || LIM_HI LIM_LOW\n", BLACK, LIGHT_GREEN);
     for (unsigned int i = 0; i < mmap_get_count(); i++)
     {
         print_mmap_entry(mmap_get_entry(i));

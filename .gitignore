@@ -2,3 +2,4 @@ src/.vs
 os-image
 *.bin
 *.o
+*.size
